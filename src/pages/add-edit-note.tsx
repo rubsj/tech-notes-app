@@ -2,8 +2,8 @@ import { OutputData } from '@editorjs/editorjs';
 import { useCallback, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { ReactTags } from 'react-tag-autocomplete';
-import type { Tag } from 'react-tag-autocomplete';
 import { TextEditor } from '../components/editor/text-editor';
+import { Notetag } from './types';
 
 export type CreateNoteProps = {
   question: string;
@@ -11,9 +11,9 @@ export type CreateNoteProps = {
   tag: string[];
 };
 
-const defaultTags: Tag[] = [
-  { value: 'java', label: 'Java' },
-  { value: 'react', label: 'React' }
+const defaultTags: Notetag[] = [
+  { value: 'java', label: 'Java', id: '1'},
+  { value: 'react', label: 'React', id: '2' }
 ];
 
 const classNames = {
@@ -35,11 +35,11 @@ const classNames = {
 };
 
 export const AddEditNote = () => {
-  const [selectedTag, setSelectedTag] = useState<Tag[]>([]);
+  const [selectedTag, setSelectedTag] = useState<Notetag[]>([]);
   const [editorData, setEditorData] = useState<OutputData>();
 
   const onAdd = useCallback(
-    (newTag: Tag) => {
+    (newTag: Notetag) => {
       console.log('new tag ', newTag);
       setSelectedTag([...selectedTag, newTag]);
     },

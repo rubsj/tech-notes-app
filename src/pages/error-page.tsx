@@ -10,7 +10,7 @@ export const ErrorPage = () => {
         <Card.Title>Error Page</Card.Title>
         <Card.Text>Sorry, an unexpected error has occurred.</Card.Text>
         <Card.Text>
-          <i className='text-danger'>{error.statusText || error.message}</i>
+          <i className='text-danger'>{error?.statusText || error?.message}</i>
         </Card.Text>
         <Card.Link onClick={() => navigate('/')}>Go Home</Card.Link>
       </Card.Body>

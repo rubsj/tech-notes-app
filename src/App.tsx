@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { OutputData } from '@editorjs/editorjs';
 import { EditorDisplay } from './components/editor/editor-display';
 import { AddEditNote } from './pages/add-edit-note'; */
-import { RouteSetup } from './pages/route-setup';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Home } from './pages/home';
 import { Layout } from './pages/layout';
@@ -14,6 +13,8 @@ import { NoteDetail } from './pages/note-detail';
 import Spinner from 'react-bootstrap/esm/Spinner';
 import { ErrorPage } from './pages/error-page';
 import { AddEditNote } from './pages/add-edit-note';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 /* function App() {
   const [data, setData] = useState<OutputData>();
@@ -60,6 +61,8 @@ import { AddEditNote } from './pages/add-edit-note';
 }
  */
 
+const queryClient = new QueryClient();
+
 const BrowserRoutes = createBrowserRouter([
   {
     path: '/',
@@ -87,6 +90,14 @@ const BrowserRoutes = createBrowserRouter([
 ]);
 
 export const App = () => {
-  return <RouterProvider router={BrowserRoutes} fallbackElement={<Spinner animation="border" />} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider
+        router={BrowserRoutes}
+        fallbackElement={<Spinner animation='border' variant="primary" />}
+      />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
 };
 //export default App;

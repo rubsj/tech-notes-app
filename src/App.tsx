@@ -1,11 +1,21 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { TextEditor } from './components/core/text-editor/text-editor';
+/* import { TextEditor } from './components/editor/text-editor';
 import { useEffect, useState } from 'react';
 import { OutputData } from '@editorjs/editorjs';
-import { EditorDisplay } from './components/core/text-editor/editor-display';
+import { EditorDisplay } from './components/editor/editor-display';
+import { AddEditNote } from './pages/add-edit-note'; */
+import { RouteSetup } from './pages/route-setup';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Home } from './pages/home';
+import { Layout } from './pages/layout';
+import { ListNotes } from './pages/list-notes';
+import { NoteDetail } from './pages/note-detail';
+import Spinner from 'react-bootstrap/esm/Spinner';
+import { ErrorPage } from './pages/error-page';
+import { AddEditNote } from './pages/add-edit-note';
 
-function App() {
+/* function App() {
   const [data, setData] = useState<OutputData>();
   const [previewData, setPreviewData] = useState<OutputData>();
 
@@ -15,6 +25,9 @@ function App() {
 
   return (
     <>
+      <div>
+        <AddEditNote />
+      </div>
       <div className='grid text-center'>
         <div className='g-col-6'>
           <div className='d-flex flex-column'>
@@ -45,5 +58,35 @@ function App() {
     </>
   );
 }
+ */
 
-export default App;
+const BrowserRoutes = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '/',
+        element: <Home />
+      },
+      {
+        path: 'add-edit-note',
+        element: <AddEditNote />
+      },
+      {
+        path: 'list-notes',
+        element: <ListNotes />
+      },
+      {
+        path: 'list-notes/:id',
+        element: <NoteDetail />
+      }
+    ]
+  }
+]);
+
+export const App = () => {
+  return <RouterProvider router={BrowserRoutes} fallbackElement={<Spinner animation="border" />} />;
+};
+//export default App;

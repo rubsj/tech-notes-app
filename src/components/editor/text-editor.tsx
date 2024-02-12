@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, ReactElement } from 'react';
+import { useEffect, useRef, ReactElement } from 'react';
 import EditorJS from '@editorjs/editorjs';
 import { EDITOR_JS_TOOLS } from './tools';
 import { TextEditorProps } from './text-editor.types';
@@ -38,5 +38,3 @@ export const TextEditor = ({
 
   return <div id={editorblock} className='w-90' />;
 };
-
-//export default memo(TextEditor);

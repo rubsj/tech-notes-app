@@ -9,7 +9,7 @@ export const Home = () => {
   const { isPending, isError, isSuccess, data, error } = useQuery({
     queryKey: ['tags'],
     queryFn: async () => {
-      const response = await axios.get('http://localhost:3000/tags');
+      const response = await axios.get('/api/tags');
       console.log('tags response ', response);
       return response.data;
     }

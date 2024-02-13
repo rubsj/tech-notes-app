@@ -1,10 +1,15 @@
 import { OutputData } from '@editorjs/editorjs';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { ReactTags, Tag } from 'react-tag-autocomplete';
 import { TextEditor } from '../components/editor/text-editor';
-import { AddEditNoteProps, Notetag, tagsClassNames } from './types';
+import {
+  AddEditNoteData,
+  AddEditNoteForm,
+  Notetag,
+  tagsClassNames
+} from './types';
 import { Guid } from 'guid-typescript';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -13,7 +18,6 @@ import axios from 'axios';
 import Alert from 'react-bootstrap/Alert';
 
 export const AddEditNote = () => {
-  //{question = '', solution = {}, tag = {}} : AddEditNoteProps
   const queryClient = useQueryClient();
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['tags'],
@@ -25,9 +29,12 @@ export const AddEditNote = () => {
   });
 
   const addNotesMutation = useMutation({
-    mutationFn: (newNote: AddEditNoteProps) => {
+    mutationFn: (newNote: AddEditNoteForm) => {
       const note = { id: Guid.create().toString(), ...newNote };
       console.log('adding note to db ', note);
+      if (pageDTO?.id) {
+        return axios.put(`/api/notes/${pageDTO.id}`, { ...note });
+      }
       return axios.post('/api/notes', { ...note });
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ['notes'] })
@@ -44,6 +51,7 @@ export const AddEditNote = () => {
   const [selectedTag, setSelectedTag] = useState<Notetag[]>([]);
   const [editorData, setEditorData] = useState<OutputData>();
   const [newTagsToAdd, setNewTagsToAdd] = useState<Notetag[]>([]);
+  const [pageDTO, setPageDTO] = useState<AddEditNoteData | undefined>();
 
   const {
     handleSubmit,
@@ -53,7 +61,7 @@ export const AddEditNote = () => {
     clearErrors,
     trigger,
     control
-  } = useForm<AddEditNoteProps>();
+  } = useForm<AddEditNoteForm>();
 
   useEffect(() => {
     setValue('tag', selectedTag);
@@ -85,42 +93,40 @@ export const AddEditNote = () => {
     console.log(editorData);
   }, [editorData]);
 
-  const onAdd = useCallback(
-    (newTag: Tag | Notetag) => {
-      console.log('new tag ', newTag);
-      if ((newTag as any)?.id) {
-        console.log('setting existing tag');
-        setSelectedTag([...selectedTag, newTag as any]);
-      } else {
-        console.log('setting new tag');
-        const tag = { ...newTag, id: Guid.create().toString() };
-        setNewTagsToAdd([...newTagsToAdd, tag]);
-        setSelectedTag([...selectedTag, tag]);
-      }
-    },
-    [selectedTag]
-  );
+  const onAdd = (newTag: Tag | Notetag) => {
+    if ((newTag as any)?.id) {
+      setSelectedTag([...selectedTag, newTag as any]);
+    } else {
+      const tag = { ...newTag, id: Guid.create().toString() };
+      setNewTagsToAdd([...newTagsToAdd, tag]);
+      setSelectedTag([...selectedTag, tag]);
+    }
+  };
 
-  const onDelete = useCallback(
-    (index: number) => {
-      setSelectedTag(selectedTag.filter((_, i) => i !== index));
-    },
-    [selectedTag]
-  );
+  const onDelete = (index: number) => {
+    const tagToBeRemoved = selectedTag.filter((_, i) => i === index)?.[0];
+    setSelectedTag(selectedTag.filter((tag) => tag.id !== tagToBeRemoved.id));
+    setNewTagsToAdd(newTagsToAdd.filter((tag) => tag.id !== tagToBeRemoved.id));
+  };
 
   const onSubmit = handleSubmit(
-    (data) => {
-      console.log('submit received data ', data);
-      // create new note
-      addNotesMutation.mutate(data);
+    async (data) => {
+      const { data: dataDTO } = await addNotesMutation.mutateAsync(data);
+      setPageDTO(dataDTO);
 
       // create new tags if new tags are to be created
-      newTagsToAdd?.forEach((tag) => {
-        addTagMutation.mutate(tag);
-      });
+      let remainingTags = newTagsToAdd;
+      await Promise.all(
+        newTagsToAdd?.map(async (tag) => {
+          const { data: dataTagDto } = await addTagMutation.mutateAsync(tag);
+          remainingTags = remainingTags.filter(
+            (val) => val.id != dataTagDto.id
+          );
+        })
+      );
+      setNewTagsToAdd(remainingTags);
     },
     (error) => {
-      console.error('errors?.question?.message ', errors);
       console.error('submit received error ', error);
     }
   );
@@ -136,12 +142,12 @@ export const AddEditNote = () => {
     <div>
       {addNotesMutation?.isError && (
         <Alert variant='danger' dismissible>
-          {addNotesMutation?.error?.message ?? 'Add Notes Failed'}
+          {`Note: ${addNotesMutation?.error?.message}` ?? 'Add Notes Failed'}
         </Alert>
       )}
       {addTagMutation?.isError && (
         <Alert variant='danger' dismissible>
-          {addTagMutation?.error?.message ?? 'Add new tag failed'}
+          {`Tag: ${addTagMutation?.error?.message}` ?? 'Add new tag failed'}
         </Alert>
       )}
       <form>

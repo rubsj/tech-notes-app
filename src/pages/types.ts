@@ -3,11 +3,13 @@ import type { Tag } from 'react-tag-autocomplete';
 
 export type Notetag = Tag & { id: string };
 
-export type AddEditNoteProps = {
+export type AddEditNoteForm = {
     question: string;
     solution: OutputData;
     tag: Notetag[];
 };
+
+export type AddEditNoteData = AddEditNoteForm & { id: string }
 
 export const tagsClassNames = {
     root: 'react-tags',

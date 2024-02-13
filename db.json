@@ -1,89 +1,130 @@
 {
-    "tags": [
+  "tags": [
+    {
+      "value": "java",
+      "label": "Java",
+      "id": "d23a"
+    },
+    {
+      "value": "spring-boot",
+      "label": "Spring Boot",
+      "id": "c580"
+    },
+    {
+      "value": "jpa",
+      "label": "JPA",
+      "id": "6832"
+    },
+    {
+      "value": "hibernate",
+      "label": "Hibernate",
+      "id": "53ea"
+    },
+    {
+      "value": "spring-core",
+      "label": "Spring Core",
+      "id": "2242"
+    },
+    {
+      "value": "spring-data",
+      "label": "Spring Data",
+      "id": "1958"
+    },
+    {
+      "value": "azure",
+      "label": "Azure",
+      "id": "95df"
+    },
+    {
+      "value": "aws",
+      "label": "AWS",
+      "id": "dc7f"
+    },
+    {
+      "value": "react",
+      "label": "React",
+      "id": "26a2"
+    },
+    {
+      "value": "javascript",
+      "label": "JavaScript",
+      "id": "4bd0"
+    },
+    {
+      "value": "typescript",
+      "label": "Typescript",
+      "id": "543f"
+    },
+    {
+      "value": "data-structure",
+      "label": "Data structure",
+      "id": "d181"
+    },
+    {
+      "value": "leetcode",
+      "label": "Leet Code",
+      "id": "e8d4"
+    },
+    {
+      "value": "system-design",
+      "label": "System Design",
+      "id": "9044"
+    },
+    {
+      "value": "architecture",
+      "label": "Architecture",
+      "id": "a1d0"
+    },
+    {
+      "value": "css",
+      "label": "CSS",
+      "id": "3ad1"
+    },
+    {
+      "value": "html",
+      "label": "HTML",
+      "id": "dad1"
+    },
+    {
+      "id": "f4eb4469-4952-4aba-2652-83a53d93d9ef",
+      "value": "Core Java",
+      "label": "Core Java"
+    },
+    {
+      "id": "f4eb4469-4952-4aba-2652-83a53d93d9ef",
+      "value": "Core Java",
+      "label": "Core Java"
+    }
+  ],
+  "notes": [
+    {
+      "id": "09718b93-801e-5049-1605-f3e3de6e52a5",
+      "tag": [
         {
-            "value": "java",
-            "label": "Java",
-            "id": "d23a"
+          "value": "java",
+          "label": "Java",
+          "id": "d23a"
         },
         {
-            "value": "spring-boot",
-            "label": "Spring Boot",
-            "id": "c580"
-        },
-        {
-            "value": "jpa",
-            "label": "JPA",
-            "id": "6832"
-        },
-        {
-            "value": "hibernate",
-            "label": "Hibernate",
-            "id": "53ea"
-        },
-        {
-            "value": "spring-core",
-            "label": "Spring Core",
-            "id": "2242"
-        },
-        {
-            "value": "spring-data",
-            "label": "Spring Data",
-            "id": "1958"
-        },
-        {
-            "value": "azure",
-            "label": "Azure",
-            "id": "95df"
-        },
-        {
-            "value": "aws",
-            "label": "AWS",
-            "id": "dc7f"
-        },
-        {
-            "value": "react",
-            "label": "React",
-            "id": "26a2"
-        },
-        {
-            "value": "javascript",
-            "label": "JavaScript",
-            "id": "4bd0"
-        },
-        {
-            "value": "typescript",
-            "label": "Typescript",
-            "id": "543f"
-        },
-        {
-            "value": "data-structure",
-            "label": "Data structure",
-            "id": "d181"
-        },
-        {
-            "value": "leetcode",
-            "label": "Leet Code",
-            "id": "e8d4"
-        },
-        {
-            "value": "system-design",
-            "label": "System Design",
-            "id": "9044"
-        },
-        {
-            "value": "architecture",
-            "label": "Architecture",
-            "id": "a1d0"
-        },
-        {
-            "value": "css",
-            "label": "CSS",
-            "id": "3ad1"
-        },
-        {
-            "value": "html",
-            "label": "HTML",
-            "id": "dad1"
+          "value": "Core Java",
+          "label": "Core Java",
+          "id": "f4eb4469-4952-4aba-2652-83a53d93d9ef"
         }
-    ]
+      ],
+      "question": "Can you tell the difference between equals() method and equality operator (==) in Java?",
+      "solution": {
+        "time": 1707796594496,
+        "blocks": [
+          {
+            "id": "0DVYAwwDwl",
+            "type": "paragraph",
+            "data": {
+              "text": "test solution"
+            }
+          }
+        ],
+        "version": "2.29.0"
+      }
+    }
+  ]
 }

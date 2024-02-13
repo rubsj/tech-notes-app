@@ -94,7 +94,7 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <RouterProvider
         router={BrowserRoutes}
-        fallbackElement={<Spinner animation='border' variant="primary" />}
+        fallbackElement={<Spinner animation='border' variant='primary' />}
       />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

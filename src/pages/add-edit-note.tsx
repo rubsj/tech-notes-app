@@ -4,43 +4,47 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { ReactTags, Tag } from 'react-tag-autocomplete';
 import { TextEditor } from '../components/editor/text-editor';
-import { AddEditNoteProps, Notetag } from './types';
+import { AddEditNoteProps, Notetag, tagsClassNames } from './types';
 import { Guid } from 'guid-typescript';
 import { Controller, useForm } from 'react-hook-form';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Spinner from 'react-bootstrap/Spinner';
 import axios from 'axios';
-
-const classNames = {
-  root: 'react-tags',
-  rootIsActive: 'is-active',
-  rootIsDisabled: 'is-disabled',
-  rootIsInvalid: 'is-invalid',
-  label: 'react-tags__label',
-  tagList: 'react-tags__list',
-  tagListItem: 'react-tags__list-item',
-  tag: 'react-tags__tag',
-  tagName: 'react-tags__tag-name',
-  comboBox: 'react-tags__combobox',
-  input: 'react-tags__combobox-input',
-  listBox: 'react-tags__listbox',
-  option: 'react-tags__listbox-option',
-  optionIsActive: 'is-active',
-  highlight: 'react-tags__listbox-option-highlight'
-};
+import Alert from 'react-bootstrap/Alert';
 
 export const AddEditNote = () => {
   //{question = '', solution = {}, tag = {}} : AddEditNoteProps
+  const queryClient = useQueryClient();
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['tags'],
     queryFn: async () => {
       const response = await axios.get('/api/tags');
-      console.log('tags response ', response);
+      console.log('tags response ', response.data);
       return response.data;
     }
   });
+
+  const addNotesMutation = useMutation({
+    mutationFn: (newNote: AddEditNoteProps) => {
+      const note = { id: Guid.create().toString(), ...newNote };
+      console.log('adding note to db ', note);
+      return axios.post('/api/notes', { ...note });
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ['notes'] })
+  });
+
+  const addTagMutation = useMutation({
+    mutationFn: (tag: Notetag) => {
+      console.log('adding tag to db ', tag);
+      return axios.post('/api/tags', { ...tag });
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ['tags'] })
+  });
+
   const [selectedTag, setSelectedTag] = useState<Notetag[]>([]);
   const [editorData, setEditorData] = useState<OutputData>();
+  const [newTagsToAdd, setNewTagsToAdd] = useState<Notetag[]>([]);
+
   const {
     handleSubmit,
     formState: { errors, isSubmitted, isDirty },
@@ -50,24 +54,6 @@ export const AddEditNote = () => {
     trigger,
     control
   } = useForm<AddEditNoteProps>();
-
-  const onAdd = useCallback(
-    (newTag: Tag) => {
-      console.log('new tag ', newTag);
-      setSelectedTag([
-        ...selectedTag,
-        { ...newTag, id: Guid.create().toString() }
-      ]);
-    },
-    [selectedTag]
-  );
-
-  const onDelete = useCallback(
-    (index: number) => {
-      setSelectedTag(selectedTag.filter((_, i) => i !== index));
-    },
-    [selectedTag]
-  );
 
   useEffect(() => {
     setValue('tag', selectedTag);
@@ -96,14 +82,45 @@ export const AddEditNote = () => {
     } else {
       clearErrors('solution');
     }
+    console.log(editorData);
   }, [editorData]);
+
+  const onAdd = useCallback(
+    (newTag: Tag | Notetag) => {
+      console.log('new tag ', newTag);
+      if ((newTag as any)?.id) {
+        console.log('setting existing tag');
+        setSelectedTag([...selectedTag, newTag as any]);
+      } else {
+        console.log('setting new tag');
+        const tag = { ...newTag, id: Guid.create().toString() };
+        setNewTagsToAdd([...newTagsToAdd, tag]);
+        setSelectedTag([...selectedTag, tag]);
+      }
+    },
+    [selectedTag]
+  );
+
+  const onDelete = useCallback(
+    (index: number) => {
+      setSelectedTag(selectedTag.filter((_, i) => i !== index));
+    },
+    [selectedTag]
+  );
 
   const onSubmit = handleSubmit(
     (data) => {
       console.log('submit received data ', data);
+      // create new note
+      addNotesMutation.mutate(data);
+
+      // create new tags if new tags are to be created
+      newTagsToAdd?.forEach((tag) => {
+        addTagMutation.mutate(tag);
+      });
     },
     (error) => {
-      console.error('errors?.question?.message ', errors?.question?.message);
+      console.error('errors?.question?.message ', errors);
       console.error('submit received error ', error);
     }
   );
@@ -117,6 +134,16 @@ export const AddEditNote = () => {
 
   return (
     <div>
+      {addNotesMutation?.isError && (
+        <Alert variant='danger' dismissible>
+          {addNotesMutation?.error?.message ?? 'Add Notes Failed'}
+        </Alert>
+      )}
+      {addTagMutation?.isError && (
+        <Alert variant='danger' dismissible>
+          {addTagMutation?.error?.message ?? 'Add new tag failed'}
+        </Alert>
+      )}
       <form>
         <Form.Group className='mb-1' controlId='topic'>
           <Form.Label>Topic / Question</Form.Label>
@@ -151,19 +178,20 @@ export const AddEditNote = () => {
             rules={{
               required: 'Tags is a required field'
             }}
-            render={({ field: { onChange, onBlur, ref, value } }) => (
+            render={({ field: { ref, value } }) => (
               <ReactTags
                 id='tag'
                 allowNew
                 allowBackspace
                 collapseOnSelect
-                classNames={{ ...classNames, root: ' react-tags form-control' }}
+                classNames={{
+                  ...tagsClassNames,
+                  root: ' react-tags form-control'
+                }}
                 suggestions={data}
                 onAdd={onAdd}
                 onDelete={onDelete}
                 selected={value}
-                onBlur={onBlur}
-                onInput={onChange}
                 ref={ref}
                 isInvalid={errors?.tag ? true : false}
               />
@@ -194,6 +222,7 @@ export const AddEditNote = () => {
           type='button'
           className='mt-2'
           onClick={onSubmit}
+          disabled={addNotesMutation.isPending || addTagMutation.isPending}
         >
           Submit
         </Button>

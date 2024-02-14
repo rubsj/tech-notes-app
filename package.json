@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "api": "json-server --watch db.json --port 3000",
-    "build:lib": "tsc && vite build",
-    "build:clean": "rimraf dist",
     "build": "run-s build:clean build:lib",
+    "build:clean": "rimraf dist",
+    "build:lib": "tsc && vite build",
     "coverage": "vitest run --coverage",
     "fix:code": "eslint --fix --quiet -c .eslintrc.cjs src",
     "format": "prettier --write src/**/*.{ts,tsx}",

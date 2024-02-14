@@ -61,10 +61,10 @@ export const AddEditNote = () => {
 
   useEffect(() => {
     setValue('tag', selectedTag);
-    if (isDirty) {
+    if (isDirty && isSubmitted) {
       trigger('tag');
     }
-  }, [isDirty, selectedTag, setValue, trigger]);
+  }, [isDirty, isSubmitted, selectedTag, setValue, trigger]);
 
   useEffect(() => {
     if (isSubmitted && !editorData) {

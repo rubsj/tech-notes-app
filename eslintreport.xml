@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<checkstyle version="4.3">
+    <file name="C:\projects\tech-notes-app\src\App.test.tsx"></file>
+    <file name="C:\projects\tech-notes-app\src\App.tsx"></file>
+    <file name="C:\projects\tech-notes-app\src\components\editor\editor-display.tsx">
+        <error line="34" column="6" severity="warning" message="React Hook useEffect has a missing dependency: &apos;editorblock&apos;. Either include it or remove the dependency array. (react-hooks/exhaustive-deps)" source="eslint.rules.react-hooks/exhaustive-deps" />
+    </file>
+    <file name="C:\projects\tech-notes-app\src\components\editor\text-editor.tsx">
+        <error line="39" column="6" severity="warning" message="React Hook useEffect has missing dependencies: &apos;data&apos;, &apos;editorblock&apos;, and &apos;onChange&apos;. Either include them or remove the dependency array. If &apos;onChange&apos; changes too often, find the parent component that defines it and wrap that definition in useCallback. (react-hooks/exhaustive-deps)" source="eslint.rules.react-hooks/exhaustive-deps" />
+    </file>
+    <file name="C:\projects\tech-notes-app\src\components\editor\text-editor.types.ts"></file>
+    <file name="C:\projects\tech-notes-app\src\components\editor\tools.js"></file>
+    <file name="C:\projects\tech-notes-app\src\main.tsx"></file>
+    <file name="C:\projects\tech-notes-app\src\pages\add-edit-note.tsx"></file>
+    <file name="C:\projects\tech-notes-app\src\pages\error-page.tsx"></file>
+    <file name="C:\projects\tech-notes-app\src\pages\home.tsx"></file>
+    <file name="C:\projects\tech-notes-app\src\pages\layout.tsx"></file>
+    <file name="C:\projects\tech-notes-app\src\pages\list-notes.tsx"></file>
+    <file name="C:\projects\tech-notes-app\src\pages\note-detail.tsx"></file>
+    <file name="C:\projects\tech-notes-app\src\pages\search-notes.tsx"></file>
+    <file name="C:\projects\tech-notes-app\src\pages\types.ts"></file>
+    <file name="C:\projects\tech-notes-app\src\services\search-notes.ts"></file>
+    <file name="C:\projects\tech-notes-app\src\test\setup.ts"></file>
+    <file name="C:\projects\tech-notes-app\src\vite-env.d.ts"></file>
+</checkstyle>

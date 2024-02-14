@@ -1,7 +1,9 @@
-import { useEffect, useRef, ReactElement } from 'react';
 import EditorJS from '@editorjs/editorjs';
-import { EDITOR_JS_TOOLS } from './tools';
+import { ReactElement, useEffect, useRef } from 'react';
+
 import { TextEditorProps } from './text-editor.types';
+// @ts-ignore
+import { EDITOR_JS_TOOLS } from './tools';
 
 export const TextEditor = ({
   data,
@@ -19,6 +21,7 @@ export const TextEditor = ({
         holder: editorblock,
         tools: EDITOR_JS_TOOLS,
         data,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         async onChange(api, event) {
           const data = await api.saver.save();
           onChange?.(data);

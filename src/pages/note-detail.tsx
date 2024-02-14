@@ -1,3 +1,3 @@
-export const NoteDetail = ()=>{
-    return <>This is note detail</>
-}
+export const NoteDetail = () => {
+  return <>This is note detail</>;
+};

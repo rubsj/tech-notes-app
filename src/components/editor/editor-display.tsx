@@ -1,10 +1,12 @@
 //import Blocks, { DataProp } from 'editorjs-blocks-react-renderer';
 import EditorJS, { OutputData } from '@editorjs/editorjs';
-import { EDITOR_JS_TOOLS } from './tools';
 import { useEffect, useRef } from 'react';
-import { EditorDisplayProps } from './text-editor.types';
 
-export const EditorDisplay = ({ data,  editorblock}: EditorDisplayProps) => {
+import { EditorDisplayProps } from './text-editor.types';
+// @ts-ignore
+import { EDITOR_JS_TOOLS } from './tools';
+
+export const EditorDisplay = ({ data, editorblock }: EditorDisplayProps) => {
   const ref = useRef<EditorJS>();
   const renderedData = useRef<OutputData>();
 
@@ -30,10 +32,7 @@ export const EditorDisplay = ({ data,  editorblock}: EditorDisplayProps) => {
         ref.current.destroy();
       }
     };
-  }, [data]);
+  }, [data, editorblock]);
 
   return <div id={editorblock} className='w-90' />;
 };
-
-//export default EditorDisplay;
-

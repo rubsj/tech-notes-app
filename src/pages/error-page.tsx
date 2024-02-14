@@ -2,6 +2,7 @@ import Card from 'react-bootstrap/Card';
 import { useNavigate, useRouteError } from 'react-router-dom';
 
 export const ErrorPage = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const error = useRouteError() as any;
   const navigate = useNavigate();
   return (

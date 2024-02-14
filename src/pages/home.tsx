@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Button, Nav, Spinner, Card } from 'react-bootstrap';
+import { Button, Card, Nav, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+
 import { Notetag } from './types';
 
 export const Home = () => {

@@ -1,19 +1,19 @@
-import Paragraph from '@editorjs/paragraph';
-import Embed from '@editorjs/embed';
-import Table from '@editorjs/table';
-import NestedList from '@editorjs/nested-list';
-import Warning from '@editorjs/warning';
-import Code from '@editorjs/code';
-import Raw from '@editorjs/raw';
-import Header from '@editorjs/header';
-import Quote from '@editorjs/quote';
-import Marker from '@editorjs/marker';
 import CheckList from '@editorjs/checklist';
+import Code from '@editorjs/code';
 import Delimiter from '@editorjs/delimiter';
+import Embed from '@editorjs/embed';
+import Header from '@editorjs/header';
 import InlineCode from '@editorjs/inline-code';
+import Marker from '@editorjs/marker';
+import NestedList from '@editorjs/nested-list';
+import Paragraph from '@editorjs/paragraph';
+import Quote from '@editorjs/quote';
+import Raw from '@editorjs/raw';
+import Table from '@editorjs/table';
 import Underline from '@editorjs/underline';
-import ColorPlugin from 'editorjs-text-color-plugin';
+import Warning from '@editorjs/warning';
 import Strikethrough from '@sotaproject/strikethrough';
+import ColorPlugin from 'editorjs-text-color-plugin';
 
 export const EDITOR_JS_TOOLS = {
   paragraph: {
@@ -41,11 +41,11 @@ export const EDITOR_JS_TOOLS = {
   header: Header,
   quote: {
     class: Quote,
-    inlineToolbar: true,
+    inlineToolbar: true
   },
   checklist: {
     class: CheckList,
-    inlineToolbar: true,
+    inlineToolbar: true
   },
   delimiter: Delimiter,
   inlineCode: InlineCode,

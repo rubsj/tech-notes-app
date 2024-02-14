@@ -1,20 +1,22 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import Spinner from 'react-bootstrap/esm/Spinner';
 /* import { TextEditor } from './components/editor/text-editor';
 import { useEffect, useState } from 'react';
 import { OutputData } from '@editorjs/editorjs';
 import { EditorDisplay } from './components/editor/editor-display';
 import { AddEditNote } from './pages/add-edit-note'; */
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import { AddEditNote } from './pages/add-edit-note';
+import { ErrorPage } from './pages/error-page';
 import { Home } from './pages/home';
 import { Layout } from './pages/layout';
 import { ListNotes } from './pages/list-notes';
 import { NoteDetail } from './pages/note-detail';
-import Spinner from 'react-bootstrap/esm/Spinner';
-import { ErrorPage } from './pages/error-page';
-import { AddEditNote } from './pages/add-edit-note';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 /* function App() {
   const [data, setData] = useState<OutputData>();

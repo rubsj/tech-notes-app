@@ -1,3 +1,3 @@
-export const ListNotes = () =>{
-    return <>This is list notes</>
-}
+export const ListNotes = () => {
+  return <>This is list notes</>;
+};

@@ -1,21 +1,17 @@
 import { OutputData } from '@editorjs/editorjs';
-import { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import { ReactTags, Tag } from 'react-tag-autocomplete';
-import { TextEditor } from '../components/editor/text-editor';
-import {
-  AddEditNoteData,
-  AddEditNoteForm,
-  Notetag,
-  tagsClassNames
-} from './types';
-import { Guid } from 'guid-typescript';
-import { Controller, useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Spinner from 'react-bootstrap/Spinner';
 import axios from 'axios';
+import { Guid } from 'guid-typescript';
+import { useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Spinner from 'react-bootstrap/Spinner';
+import { Controller, useForm } from 'react-hook-form';
+import { ReactTags, Tag } from 'react-tag-autocomplete';
+
+import { TextEditor } from '../components/editor/text-editor';
+import { AddEditNoteForm, NoteData, Notetag, tagsClassNames } from './types';
 
 export const AddEditNote = () => {
   const queryClient = useQueryClient();
@@ -51,7 +47,7 @@ export const AddEditNote = () => {
   const [selectedTag, setSelectedTag] = useState<Notetag[]>([]);
   const [editorData, setEditorData] = useState<OutputData>();
   const [newTagsToAdd, setNewTagsToAdd] = useState<Notetag[]>([]);
-  const [pageDTO, setPageDTO] = useState<AddEditNoteData | undefined>();
+  const [pageDTO, setPageDTO] = useState<NoteData | undefined>();
 
   const {
     handleSubmit,
@@ -68,13 +64,13 @@ export const AddEditNote = () => {
     if (isDirty) {
       trigger('tag');
     }
-  }, [selectedTag]);
+  }, [isDirty, selectedTag, setValue, trigger]);
 
   useEffect(() => {
     if (isSubmitted && !editorData) {
       setError('solution', { type: 'required' });
     }
-  }, [isSubmitted]);
+  }, [editorData, isSubmitted, setError]);
 
   useEffect(() => {
     if (!isDirty || !isSubmitted) {
@@ -91,11 +87,11 @@ export const AddEditNote = () => {
       clearErrors('solution');
     }
     console.log(editorData);
-  }, [editorData]);
+  }, [clearErrors, editorData, isDirty, isSubmitted, setError, setValue]);
 
   const onAdd = (newTag: Tag | Notetag) => {
-    if ((newTag as any)?.id) {
-      setSelectedTag([...selectedTag, newTag as any]);
+    if ((newTag as Notetag)?.id) {
+      setSelectedTag([...selectedTag, newTag as Notetag]);
     } else {
       const tag = { ...newTag, id: Guid.create().toString() };
       setNewTagsToAdd([...newTagsToAdd, tag]);

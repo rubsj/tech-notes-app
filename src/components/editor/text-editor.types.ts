@@ -1,12 +1,12 @@
-import { OutputData } from "@editorjs/editorjs";
+import { OutputData } from '@editorjs/editorjs';
 
 export type TextEditorProps = {
-    data?: OutputData;
-    onChange?(val: OutputData): void;
-    editorblock: string;
+  data?: OutputData;
+  onChange?(val: OutputData): void;
+  editorblock: string;
 };
 
 export type EditorDisplayProps = {
-    data?: OutputData;
-    editorblock: string;
+  data?: OutputData;
+  editorblock: string;
 };

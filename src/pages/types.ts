@@ -11,6 +11,16 @@ export type AddEditNoteForm = {
 
 export type NoteData = AddEditNoteForm & { id: string };
 
+export type SearchResults = {
+  id: string;
+  question: string;
+};
+
+export type BreadCrumb = {
+  link: string;
+  label: string;
+};
+
 export const tagsClassNames = {
   root: 'react-tags',
   rootIsActive: 'is-active',

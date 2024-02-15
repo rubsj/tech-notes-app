@@ -9,14 +9,9 @@ import { useEffect, useState } from 'react';
 import { OutputData } from '@editorjs/editorjs';
 import { EditorDisplay } from './components/editor/editor-display';
 import { AddEditNote } from './pages/add-edit-note'; */
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 
-import { AddEditNote } from './pages/add-edit-note';
-import { ErrorPage } from './pages/error-page';
-import { Home } from './pages/home';
-import { Layout } from './pages/layout';
-import { ListNotes } from './pages/list-notes';
-import { NoteDetail } from './pages/note-detail';
+import { BrowserRoutes } from './pages/layout';
 
 /* function App() {
   const [data, setData] = useState<OutputData>();
@@ -65,32 +60,6 @@ import { NoteDetail } from './pages/note-detail';
 
 const queryClient = new QueryClient();
 
-const BrowserRoutes = createBrowserRouter([
-  {
-    path: '/',
-    element: <Layout />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '/',
-        element: <Home />
-      },
-      {
-        path: 'add-edit-note',
-        element: <AddEditNote />
-      },
-      {
-        path: 'list-notes',
-        element: <ListNotes />
-      },
-      {
-        path: 'list-notes/:id',
-        element: <NoteDetail />
-      }
-    ]
-  }
-]);
-
 export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -102,4 +71,3 @@ export const App = () => {
     </QueryClientProvider>
   );
 };
-//export default App;

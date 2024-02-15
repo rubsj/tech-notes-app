@@ -3,17 +3,21 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Guid } from 'guid-typescript';
 import { useEffect, useState } from 'react';
+import { Breadcrumb } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import { Controller, useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { ReactTags, Tag } from 'react-tag-autocomplete';
 
 import { TextEditor } from '../components/editor/text-editor';
+import { useBreadCrumbs } from '../services/bread-crumb';
 import { AddEditNoteForm, NoteData, Notetag, tagsClassNames } from './types';
 
 export const AddEditNote = () => {
+  const breadCrumbs = useBreadCrumbs();
   const queryClient = useQueryClient();
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['tags'],
@@ -146,6 +150,18 @@ export const AddEditNote = () => {
           {`Tag: ${addTagMutation?.error?.message}` ?? 'Add new tag failed'}
         </Alert>
       )}
+      <Breadcrumb>
+        {breadCrumbs?.map((crumb, index) => (
+          <Breadcrumb.Item
+            key={crumb.link}
+            linkAs={Link}
+            linkProps={{ to: `${crumb.link}` }}
+            active={breadCrumbs.length - 1 === index}
+          >
+            {crumb.label}
+          </Breadcrumb.Item>
+        ))}
+      </Breadcrumb>
       <form>
         <Form.Group className='mb-1' controlId='topic'>
           <Form.Label>Topic / Question</Form.Label>

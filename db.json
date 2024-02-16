@@ -94,6 +94,7 @@
   "notes": [
     {
       "id": "09718b93-801e-5049-1605-f3e3de6e52a5",
+      "question": "Can you tell the difference between equals() method and equality operator (==) in Java?",
       "tag": [
         {
           "value": "java",
@@ -106,7 +107,6 @@
           "id": "f4eb4469-4952-4aba-2652-83a53d93d9ef"
         }
       ],
-      "question": "Can you tell the difference between equals() method and equality operator (==) in Java?",
       "solution": {
         "time": 1707796594496,
         "blocks": [
@@ -147,6 +147,7 @@
     },
     {
       "id": "03c50d5e-9744-7979-d278-d6b568f2bce1",
+      "question": "Java Question updated 12",
       "tag": [
         {
           "value": "java",
@@ -154,15 +155,14 @@
           "id": "d23a"
         }
       ],
-      "question": "temp",
       "solution": {
-        "time": 1707845268495,
+        "time": 1708052519776,
         "blocks": [
           {
             "id": "NZPq4FNrPl",
             "type": "paragraph",
             "data": {
-              "text": "test"
+              "text": "Solution editor updated 12"
             }
           }
         ],
@@ -187,6 +187,35 @@
             "type": "paragraph",
             "data": {
               "text": "test solution spring core asd"
+            }
+          }
+        ],
+        "version": "2.29.0"
+      }
+    },
+    {
+      "id": "698396a1-a9c7-ec36-f69d-0feb01a0b0f0",
+      "question": "test typescript Q 4",
+      "tag": [
+        {
+          "value": "typescript",
+          "label": "Typescript",
+          "id": "543f"
+        },
+        {
+          "value": "javascript",
+          "label": "JavaScript",
+          "id": "4bd0"
+        }
+      ],
+      "solution": {
+        "time": 1708039525812,
+        "blocks": [
+          {
+            "id": "GzPqxAp7Dt",
+            "type": "paragraph",
+            "data": {
+              "text": "TS solution 4"
             }
           }
         ],

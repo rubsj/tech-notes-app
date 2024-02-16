@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import { Controller, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ReactTags, Tag } from 'react-tag-autocomplete';
 
 import { TextEditor } from '../components/editor/text-editor';
@@ -18,12 +18,13 @@ import { AddEditNoteForm, NoteData, Notetag, tagsClassNames } from './types';
 
 export const AddEditNote = () => {
   const breadCrumbs = useBreadCrumbs();
+  const location = useLocation();
   const queryClient = useQueryClient();
+
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['tags'],
     queryFn: async () => {
       const response = await axios.get('/api/tags');
-      console.log('tags response ', response.data);
       return response.data;
     }
   });
@@ -37,12 +38,12 @@ export const AddEditNote = () => {
       }
       return axios.post('/api/notes', { ...note });
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ['notes'] })
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: ['notes', pageDTO?.id] })
   });
 
   const addTagMutation = useMutation({
     mutationFn: (tag: Notetag) => {
-      console.log('adding tag to db ', tag);
       return axios.post('/api/tags', { ...tag });
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ['tags'] })
@@ -52,9 +53,11 @@ export const AddEditNote = () => {
   const [editorData, setEditorData] = useState<OutputData>();
   const [newTagsToAdd, setNewTagsToAdd] = useState<Notetag[]>([]);
   const [pageDTO, setPageDTO] = useState<NoteData | undefined>();
+  const [loadEditor, setLoadEditor] = useState<boolean>(false);
 
   const {
     handleSubmit,
+    formState,
     formState: { errors, isSubmitted, isDirty },
     setValue,
     setError,
@@ -64,6 +67,22 @@ export const AddEditNote = () => {
   } = useForm<AddEditNoteForm>();
 
   useEffect(() => {
+    if (!location?.state) {
+      setLoadEditor(true);
+      return;
+    }
+    const note: NoteData = location.state;
+    console.log('note to edit ', note);
+    setPageDTO(location.state);
+    setValue('tag', note.tag);
+    setValue('solution', note.solution);
+    setEditorData(note.solution);
+    setValue('question', note.question);
+    setSelectedTag(note.tag);
+    setLoadEditor(true);
+  }, [location, setValue]);
+
+  useEffect(() => {
     setValue('tag', selectedTag);
     if (isDirty && isSubmitted) {
       trigger('tag');
@@ -71,26 +90,17 @@ export const AddEditNote = () => {
   }, [isDirty, isSubmitted, selectedTag, setValue, trigger]);
 
   useEffect(() => {
-    if (isSubmitted && !editorData) {
-      setError('solution', { type: 'required' });
+    console.log('editor data use effect ', editorData);
+    if (editorData) {
+      setValue('solution', editorData);
     }
-  }, [editorData, isSubmitted, setError]);
-
-  useEffect(() => {
-    if (!isDirty || !isSubmitted) {
-      return;
+    if (isSubmitted) {
+      if (!editorData || editorData.blocks?.length === 0) {
+        setError('solution', { type: 'required' });
+      } else {
+        clearErrors('solution');
+      }
     }
-    if (!editorData) {
-      setError('solution', { type: 'required' });
-      return;
-    }
-    setValue('solution', editorData);
-    if (editorData?.blocks?.length === 0) {
-      setError('solution', { type: 'required' });
-    } else {
-      clearErrors('solution');
-    }
-    console.log(editorData);
   }, [clearErrors, editorData, isDirty, isSubmitted, setError, setValue]);
 
   const onAdd = (newTag: Tag | Notetag) => {
@@ -110,8 +120,9 @@ export const AddEditNote = () => {
   };
 
   const onSubmit = handleSubmit(
-    async (data) => {
-      const { data: dataDTO } = await addNotesMutation.mutateAsync(data);
+    async (formData) => {
+      console.log('formState before submit ', formState);
+      const { data: dataDTO } = await addNotesMutation.mutateAsync(formData);
       setPageDTO(dataDTO);
 
       // create new tags if new tags are to be created
@@ -135,7 +146,11 @@ export const AddEditNote = () => {
     return <Spinner animation='border' variant='primary' />;
   }
   if (isError) {
-    return <p className='text-danger'>{error?.message}</p>;
+    return (
+      <Alert variant='danger' dismissible>
+        {`Note: ${error?.message}` ?? 'Note Detail Failed'}
+      </Alert>
+    );
   }
 
   return (
@@ -225,11 +240,13 @@ export const AddEditNote = () => {
             className={`form-control ${errors?.solution ? ' is-invalid' : ''}`}
             id='solution'
           >
-            <TextEditor
-              data={editorData}
-              onChange={setEditorData}
-              editorblock='editorjs-container'
-            />
+            {loadEditor && (
+              <TextEditor
+                data={editorData}
+                onChange={setEditorData}
+                editorblock='editorjs-container'
+              />
+            )}
           </div>
           <Form.Control.Feedback type='invalid'>
             {'Solution is required field'}

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Breadcrumb, Button, Card, Nav, Spinner } from 'react-bootstrap';
+import { Alert, Breadcrumb, Button, Card, Nav, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useBreadCrumbs } from '../services/bread-crumb';
@@ -46,7 +46,11 @@ export const Home = () => {
             Click any of the tags below to list all the notes for the tag
           </Card.Text>
           {isPending && <Spinner animation='border' variant='primary' />}
-          {isError && <p className='text-danger'>{error?.message}</p>}
+          {isError && (
+            <Alert variant='danger' dismissible>
+              {`Note: ${error?.message}` ?? 'Tags loading failed!'}
+            </Alert>
+          )}
           {isSuccess && (
             <Nav variant='pills'>
               {data?.map(({ id, value, label }: Notetag) => {

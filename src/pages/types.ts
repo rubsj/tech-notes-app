@@ -5,7 +5,7 @@ export type Notetag = Tag & { id: string };
 
 export type AddEditNoteForm = {
   question: string;
-  solution: OutputData;
+  solution?: OutputData;
   tag: Notetag[];
 };
 

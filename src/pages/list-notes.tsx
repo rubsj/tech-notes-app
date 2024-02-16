@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Breadcrumb, Card, ListGroup, Spinner } from 'react-bootstrap';
-import { Link, useLocation } from 'react-router-dom';
+import { Alert, Breadcrumb, Card, ListGroup, Spinner } from 'react-bootstrap';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { useBreadCrumbs } from '../services/bread-crumb';
 import { searchNotes } from '../services/search-notes';
@@ -9,18 +9,18 @@ import { Notetag } from './types';
 
 export const ListNotes = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [searchTags, setSeatchTags] = useState<Notetag[]>(
-    [location?.state] ?? []
+    location?.state ? [location?.state] : []
   );
 
   const breadCrumbs = useBreadCrumbs();
 
   const { isPending, isError, isSuccess, data, error } = useQuery({
-    queryKey: ['notes', [searchTags]],
+    queryKey: ['notes', searchTags],
     queryFn: async () => {
-      const data = await searchNotes(searchTags.map((tag) => tag.id));
-      console.log('query fn returned ', data);
+      const data = await searchNotes(searchTags?.map((tag) => tag?.id));
       return data;
     }
   });
@@ -44,7 +44,11 @@ export const ListNotes = () => {
         <Card.Body>TBD</Card.Body>
       </Card>
       {isPending && <Spinner animation='border' variant='primary' />}
-      {isError && <p className='text-danger'>{error?.message}</p>}
+      {isError && (
+        <Alert variant='danger' dismissible>
+          {`Note: ${error?.message}` ?? 'Note Detail Failed'}
+        </Alert>
+      )}
       {isSuccess && (
         <ListGroup>
           <ListGroup.Item variant='primary'>Search Result</ListGroup.Item>
@@ -53,7 +57,11 @@ export const ListNotes = () => {
           )}
           {data.length !== 0 &&
             data?.map((item) => (
-              <ListGroup.Item action key={item.id}>
+              <ListGroup.Item
+                action
+                key={item.id}
+                onClick={() => navigate(`${location.pathname}/${item.id}`)}
+              >
                 {item.question}
               </ListGroup.Item>
             ))}

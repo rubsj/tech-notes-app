@@ -12,7 +12,6 @@ import { AddEditNote } from './pages/add-edit-note'; */
 import { RouterProvider } from 'react-router-dom';
 
 import { BrowserRoutes } from './pages/layout';
-
 /* function App() {
   const [data, setData] = useState<OutputData>();
   const [previewData, setPreviewData] = useState<OutputData>();

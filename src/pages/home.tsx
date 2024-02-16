@@ -13,12 +13,10 @@ export const Home = () => {
     queryKey: ['tags'],
     queryFn: async () => {
       const response = await axios.get('/api/tags');
-      console.log('tags response ', response);
       return response.data;
     }
   });
   const onPillClick = (id: string, value: string, label: string) => {
-    console.log('clicked pill ', label);
     navigate('/list-notes', { state: { id, value, label } });
   };
 

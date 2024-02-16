@@ -18,16 +18,13 @@ export const NoteDetail = () => {
     queryKey: [noteId],
     queryFn: async () => {
       const { data } = await axios.get(`/api/notes/${noteId}`);
-      console.log('note details data ', data);
       return data as NoteData;
     }
   });
 
   useEffect(() => {
     const paths = location?.pathname.split('/');
-    console.log('noted details  ', paths?.[paths.length - 1]);
     setNoteId(paths?.[paths.length - 1]);
-    console.log('data ', data);
     setLoadEditor(true);
   }, [data, location]);
 

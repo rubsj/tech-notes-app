@@ -6,7 +6,6 @@ import { BreadCrumb } from '../pages/types';
 
 export const getBreadCrumbs = (path: string): BreadCrumb[] => {
   let currentLink = '';
-  console.log('path ', path, 'crumbs ', path.split('/'));
   const homeCrumb: BreadCrumb = {
     link: '/',
     label: BreadCrumbPathMapping.get('/') ?? 'Label Not Found'

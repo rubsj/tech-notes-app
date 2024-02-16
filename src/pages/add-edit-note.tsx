@@ -32,7 +32,6 @@ export const AddEditNote = () => {
   const addNotesMutation = useMutation({
     mutationFn: (newNote: AddEditNoteForm) => {
       const note = { id: Guid.create().toString(), ...newNote };
-      console.log('adding note to db ', note);
       if (pageDTO?.id) {
         return axios.put(`/api/notes/${pageDTO.id}`, { ...note });
       }
@@ -72,7 +71,6 @@ export const AddEditNote = () => {
       return;
     }
     const note: NoteData = location.state;
-    console.log('note to edit ', note);
     setPageDTO(location.state);
     setValue('tag', note.tag);
     setValue('solution', note.solution);
@@ -90,7 +88,6 @@ export const AddEditNote = () => {
   }, [isDirty, isSubmitted, selectedTag, setValue, trigger]);
 
   useEffect(() => {
-    console.log('editor data use effect ', editorData);
     if (editorData) {
       setValue('solution', editorData);
     }
@@ -121,7 +118,6 @@ export const AddEditNote = () => {
 
   const onSubmit = handleSubmit(
     async (formData) => {
-      console.log('formState before submit ', formState);
       const { data: dataDTO } = await addNotesMutation.mutateAsync(formData);
       setPageDTO(dataDTO);
 

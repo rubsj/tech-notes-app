@@ -13,7 +13,7 @@ export const NoteDetail = () => {
   const breadCrumbs = useBreadCrumbs();
   const navigate = useNavigate();
   const [noteId, setNoteId] = useState<string>('');
-  const [loadEditor, setLoadEditor] = useState<boolean>(false);
+
   const { isPending, isError, data, error } = useQuery({
     queryKey: [noteId],
     queryFn: async () => {
@@ -25,7 +25,6 @@ export const NoteDetail = () => {
   useEffect(() => {
     const paths = location?.pathname.split('/');
     setNoteId(paths?.[paths.length - 1]);
-    setLoadEditor(true);
   }, [data, location]);
 
   if (isPending) {
@@ -82,12 +81,11 @@ export const NoteDetail = () => {
               </Button>
             </Nav.Item>
           </Nav>
-          {loadEditor && (
-            <EditorDisplay
-              editorblock={'solution-display'}
-              data={data?.solution}
-            />
-          )}
+
+          <EditorDisplay
+            editorblock={'solution-display'}
+            data={data?.solution}
+          />
         </Card.Body>
       </Card>
     </>

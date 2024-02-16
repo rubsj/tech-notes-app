@@ -6,13 +6,13 @@ import Header from '@editorjs/header';
 import InlineCode from '@editorjs/inline-code';
 import Marker from '@editorjs/marker';
 import NestedList from '@editorjs/nested-list';
-import Paragraph from '@editorjs/paragraph';
 import Quote from '@editorjs/quote';
 import Raw from '@editorjs/raw';
 import Table from '@editorjs/table';
 import Underline from '@editorjs/underline';
 import Warning from '@editorjs/warning';
 import Strikethrough from '@sotaproject/strikethrough';
+import Paragraph from 'editorjs-paragraph-with-alignment';
 import ColorPlugin from 'editorjs-text-color-plugin';
 
 export const EDITOR_JS_TOOLS = {

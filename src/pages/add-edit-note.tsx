@@ -21,6 +21,12 @@ export const AddEditNote = () => {
   const location = useLocation();
   const queryClient = useQueryClient();
 
+  const [selectedTag, setSelectedTag] = useState<Notetag[]>([]);
+  const [editorData, setEditorData] = useState<OutputData>();
+  const [newTagsToAdd, setNewTagsToAdd] = useState<Notetag[]>([]);
+  const [pageDTO, setPageDTO] = useState<NoteData | undefined>();
+  const [loadEditor, setLoadEditor] = useState<boolean>(false);
+
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['tags'],
     queryFn: async () => {
@@ -37,8 +43,9 @@ export const AddEditNote = () => {
       }
       return axios.post('/api/notes', { ...note });
     },
-    onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ['notes', pageDTO?.id] })
+    onSettled: () => {
+      queryClient.clear();
+    }
   });
 
   const addTagMutation = useMutation({
@@ -48,15 +55,8 @@ export const AddEditNote = () => {
     onSettled: () => queryClient.invalidateQueries({ queryKey: ['tags'] })
   });
 
-  const [selectedTag, setSelectedTag] = useState<Notetag[]>([]);
-  const [editorData, setEditorData] = useState<OutputData>();
-  const [newTagsToAdd, setNewTagsToAdd] = useState<Notetag[]>([]);
-  const [pageDTO, setPageDTO] = useState<NoteData | undefined>();
-  const [loadEditor, setLoadEditor] = useState<boolean>(false);
-
   const {
     handleSubmit,
-    formState,
     formState: { errors, isSubmitted, isDirty },
     setValue,
     setError,

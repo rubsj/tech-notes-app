@@ -11,7 +11,7 @@ export const ListNotes = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [searchTags, setSeatchTags] = useState<Notetag[]>(
+  const [searchTags] = useState<Notetag[]>(
     location?.state ? [location?.state] : []
   );
 
